@@ -49,13 +49,13 @@ class DialogueBox extends FlxSpriteGroup
 			
 			// DaveMod
 			case 'coolkid':
-				FlxG.sound.playMusic(Paths.music('Lunchbox'), 0); // PLACEHOLDER
+				FlxG.sound.playMusic(Paths.music('Lunchbox'), 0); // DaveMod -- PLACEHOLDER
 				FlxG.sound.music.fadeIn(1, 0, 0.8);
 			case 'scratch\'d':
-				FlxG.sound.playMusic(Paths.music('Lunchbox'), 0); // PLACEHOLDER
+				FlxG.sound.playMusic(Paths.music('Lunchbox'), 0); // DaveMod -- PLACEHOLDER
 				FlxG.sound.music.fadeIn(1, 0, 0.8);
 			case 'godhead':
-				FlxG.sound.playMusic(Paths.music('Lunchbox'), 0); // PLACEHOLDER
+				FlxG.sound.playMusic(Paths.music('Lunchbox'), 0); // DaveMod -- PLACEHOLDER
 				FlxG.sound.music.fadeIn(1, 0, 0.8);
 		}
 
@@ -136,14 +136,26 @@ class DialogueBox extends FlxSpriteGroup
 		if (!hasDialog)
 			return;
 		
-		portraitLeft = new FlxSprite(-20, 40);
-		portraitLeft.frames = Paths.getSparrowAtlas('weeb/senpaiPortrait');
-		portraitLeft.animation.addByPrefix('enter', 'Senpai Portrait Enter', 24, false);
-		portraitLeft.setGraphicSize(Std.int(portraitLeft.width * PlayState.daPixelZoom * 0.9));
-		portraitLeft.updateHitbox();
-		portraitLeft.scrollFactor.set();
-		add(portraitLeft);
-		portraitLeft.visible = false;
+		if (PlayState.SONG.song.toLowerCase() == 'senpai' || PlayState.SONG.song.toLowerCase() == 'roses' || PlayState.SONG.song.toLowerCase() == 'thorns') {
+			portraitLeft = new FlxSprite(-20, 40);
+			portraitLeft.frames = Paths.getSparrowAtlas('weeb/senpaiPortrait');
+			portraitLeft.animation.addByPrefix('enter', 'Senpai Portrait Enter', 24, false);
+			portraitLeft.setGraphicSize(Std.int(portraitLeft.width * PlayState.daPixelZoom * 0.9));
+			portraitLeft.updateHitbox();
+			portraitLeft.scrollFactor.set();
+			add(portraitLeft);
+			portraitLeft.visible = false;
+		}
+		if (PlayState.SONG.song.toLowerCase() == 'coolkid' || PlayState.SONG.song.toLowerCase() == 'scratch\'d' || PlayState.SONG.song.toLowerCase() == 'godhead') {
+			portraitLeft = new FlxSprite(-20, 40);
+			portraitLeft.frames = Paths.getSparrowAtlas('weeb/senpaiPortrait'); // DaveMod -- PLACEHOLDER
+			portraitLeft.animation.addByPrefix('enter', 'Senpai Portrait Enter', 24, false); // DaveMod -- PLACEHOLDER
+			portraitLeft.setGraphicSize(Std.int(portraitLeft.width * PlayState.daPixelZoom * 0.9));
+			portraitLeft.updateHitbox();
+			portraitLeft.scrollFactor.set();
+			add(portraitLeft);
+			portraitLeft.visible = false;
+		}
 
 		portraitRight = new FlxSprite(0, 40);
 		portraitRight.frames = Paths.getSparrowAtlas('weeb/bfPortrait');
