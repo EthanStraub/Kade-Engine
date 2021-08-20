@@ -46,6 +46,17 @@ class DialogueBox extends FlxSpriteGroup
 			case 'thorns':
 				FlxG.sound.playMusic(Paths.music('LunchboxScary'), 0);
 				FlxG.sound.music.fadeIn(1, 0, 0.8);
+			
+			// DaveMod
+			case 'coolkid':
+				FlxG.sound.playMusic(Paths.music('Lunchbox'), 0); // PLACEHOLDER
+				FlxG.sound.music.fadeIn(1, 0, 0.8);
+			case 'scratch\'d':
+				FlxG.sound.playMusic(Paths.music('Lunchbox'), 0); // PLACEHOLDER
+				FlxG.sound.music.fadeIn(1, 0, 0.8);
+			case 'godhead':
+				FlxG.sound.playMusic(Paths.music('Lunchbox'), 0); // PLACEHOLDER
+				FlxG.sound.music.fadeIn(1, 0, 0.8);
 		}
 
 		bgFade = new FlxSprite(-200, -200).makeGraphic(Std.int(FlxG.width * 1.3), Std.int(FlxG.height * 1.3), 0xFFB3DFd8);
@@ -87,6 +98,37 @@ class DialogueBox extends FlxSpriteGroup
 				var face:FlxSprite = new FlxSprite(320, 170).loadGraphic(Paths.image('weeb/spiritFaceForward'));
 				face.setGraphicSize(Std.int(face.width * 6));
 				add(face);
+
+			// DaveMod
+			case 'coolkid':
+				hasDialog = true;
+				box.loadGraphic(Paths.image("dave/dialogueBox"));
+				box.animation.add('normalOpen', [0], 1, false);
+				box.animation.add('normal', [0], 1, false);
+				box.width = 249;
+				box.height = 145;
+				box.x = 0;
+				box.y = 0;
+			
+			case 'scratch\'d':
+				hasDialog = true;
+				box.loadGraphic(Paths.image("dave/dialogueBox"));
+				box.animation.add('normalOpen', [0], 1, false);
+				box.animation.add('normal', [0], 1, false);
+				box.width = 249;
+				box.height = 145;
+				box.x = 0;
+				box.y = 0;
+			
+			case 'godhead':
+				hasDialog = true;
+				box.loadGraphic(Paths.image("dave/dialogueBox"));
+				box.animation.add('normalOpen', [0], 1, false);
+				box.animation.add('normal', [0], 1, false);
+				box.width = 249;
+				box.height = 145;
+				box.x = 0;
+				box.y = 0;
 		}
 
 		this.dialogueList = dialogueList;
