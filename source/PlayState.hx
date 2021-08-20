@@ -1294,6 +1294,15 @@ class PlayState extends MusicBeatState
 					schoolIntro(doof);
 				case 'thorns':
 					schoolIntro(doof);
+
+				// DaveMod
+				case 'coolkid':
+					daveIntro(doof);
+				case 'scratch\'d':
+					daveIntro(doof);
+				case 'godhead':
+					daveIntro(doof);
+
 				default:
 					startCountdown();
 			}
@@ -1392,6 +1401,39 @@ class PlayState extends MusicBeatState
 					startCountdown();
 
 				remove(black);
+			}
+		});
+	}
+
+	// DaveMod
+	function daveIntro(?dialogueBox:DialogueBox):Void 
+	{
+		var black:FlxSprite = new FlxSprite(-100, -100).makeGraphic(FlxG.width * 2, FlxG.height * 2, FlxColor.BLACK);
+		black.scrollFactor.set();
+
+		var red:FlxSprite = new FlxSprite(-100, -100).makeGraphic(FlxG.width * 2, FlxG.height * 2, 0xFFff1b31);
+		red.scrollFactor.set();
+
+		var senpaiEvil:FlxSprite = new FlxSprite(); // PLACEHOLDER
+		senpaiEvil.frames = Paths.getSparrowAtlas('weeb/senpaiCrazy'); // PLACEHOLDER
+
+		new FlxTimer().start(0.3, function(tmr:FlxTimer)
+		{
+			black.alpha -= 0.15;
+
+			if (black.alpha > 0)
+			{
+				tmr.reset(0.3);
+			}
+			else
+			{
+				if (dialogueBox != null)
+				{
+					inCutscene = true;
+					add(dialogueBox);
+				}
+				else
+					startCountdown();
 			}
 		});
 	}
@@ -4797,6 +4839,30 @@ class PlayState extends MusicBeatState
 				for (key in scrollChangeBeatMap.keys()) {
 					if (curBeat == key - 1) {
 						daveModScrollChange(curBeat + 1, scrollChangeBeatMap[curBeat + 1]);
+					} 
+				}
+			}
+			case 'Scratch\'d':
+			{
+				var scrollChangeBeatMap:Map<Int, Float> = [
+					8 => 2, 
+					16 => 1, 
+					24 => 0.60,
+					32 => 2,
+					40 => 1, 
+					48 => 0.60,
+					56 => 2,
+					64 => 1, 
+					72 => 0.60,
+					80 => 2,
+					88 => 1, 
+					96 => 0.60,
+					104 => 2
+				];
+
+				for (key in scrollChangeBeatMap.keys()) {
+					if (curBeat == key - 1) {
+						daveModScrollChange(curBeat + 1, scrollChangeBeatMap[curBeat + 1]);
 						daveModScrollSwap();
 					} 
 				}
@@ -4854,8 +4920,6 @@ class PlayState extends MusicBeatState
 			// 	}
 			// });
 		}
-
-		
 
 		trace("strumline: ", strumLine.y);
 		trace("scroll: ", PlayStateChangeables.useDownscroll);
