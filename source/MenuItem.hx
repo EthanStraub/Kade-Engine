@@ -12,11 +12,17 @@ class MenuItem extends FlxSpriteGroup
 	public var targetY:Float = 0;
 	public var week:FlxSprite;
 	public var flashingInt:Int = 0;
+	public var latestWeek:Int = 6;
 
 	public function new(x:Float, y:Float, weekNum:Int = 0)
 	{
 		super(x, y);
-		week = new FlxSprite().loadGraphic(Paths.image('storymenu/week' + weekNum));
+
+		// In case Week 7 gets added to Kade Engine before DaveMod is finished
+		if (weekNum > latestWeek)
+			week = new FlxSprite().loadGraphic(Paths.image('storymenu/week_dave'));
+		else
+			week = new FlxSprite().loadGraphic(Paths.image('storymenu/week' + weekNum));
 		add(week);
 	}
 

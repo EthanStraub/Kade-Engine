@@ -1031,13 +1031,13 @@ class PlayState extends MusicBeatState
 			strumLine.y = FlxG.height - 165;
 
 		strumLineNotes = new FlxTypedGroup<FlxSprite>();
-		add(strumLineNotes);
+		// add(strumLineNotes);
 
 		playerStrums = new FlxTypedGroup<FlxSprite>();
 		cpuStrums = new FlxTypedGroup<FlxSprite>();
 
-		generateStaticArrows(0);
-		generateStaticArrows(1);
+		// generateStaticArrows(0);
+		// generateStaticArrows(1);
 
 		// startCountdown();
 
@@ -1047,6 +1047,11 @@ class PlayState extends MusicBeatState
 			trace('song looks gucci');
 
 		generateSong(SONG.song);
+
+		// DaveMod - These are moved down here for layering purposes with the static arrows and note tails
+		add(strumLineNotes);
+		generateStaticArrows(0);
+		generateStaticArrows(1);
 
 		for(i in unspawnNotes)
 		{
@@ -1104,6 +1109,8 @@ class PlayState extends MusicBeatState
 				for(i in toBeRemoved)
 					notes.members.remove(i);
 			}
+
+		
 
 		trace('generated');
 
@@ -2030,7 +2037,7 @@ class PlayState extends MusicBeatState
 					}
 
 				default:
-					babyArrow.frames = Paths.getSparrowAtlas('NOTE_assets');
+					babyArrow.frames = Paths.getSparrowAtlas('DaveModNOTE_assets');
 					for (j in 0...4)
 					{
 						babyArrow.animation.addByPrefix(dataColor[j], 'arrow' + dataSuffix[j]);	
@@ -2709,6 +2716,20 @@ class PlayState extends MusicBeatState
 				}
 			}
 
+			// DaveMod Scroll Speed Changes
+			if (curBeat % 8 == 7)
+			{
+				if (!triggeredAlready)
+				{
+					daveModScrollCheck();
+					triggeredAlready = true;
+				}
+			}
+			else
+				triggeredAlready = false;
+	
+			trace(strumLine.y);
+
 			#if cpp
 			if (luaModchart != null)
 				luaModchart.setVar("mustHit", PlayState.SONG.notes[Std.int(curStep / 16)].mustHitSection);
@@ -2949,6 +2970,14 @@ class PlayState extends MusicBeatState
 							else
 								daNote.y += daNote.height / 2;
 
+							// DaveMod - This fixes scroll speed change issues (mostly)
+							var stepHeight = (0.45 * Conductor.stepCrochet * FlxMath.roundDecimal(PlayStateChangeables.scrollSpeed == 1 ? PlayState.SONG.speed : PlayStateChangeables.scrollSpeed, 2));
+							daNote.scale.y *= (stepHeight + 1) / daNote.height;
+							daNote.updateHitbox();
+							daNote.noteYOff = Math.round(-daNote.offset.y);
+
+							daNote.flipY = true;
+
 							// If not in botplay, only clip sustain notes when properly hit, botplay gets to clip it everytime
 							if (!PlayStateChangeables.botPlay)
 							{
@@ -2991,6 +3020,14 @@ class PlayState extends MusicBeatState
 						{
 							daNote.y -= daNote.height / 2;
 
+							// DaveMod - This fixes scroll speed change issues (mostly)
+							var stepHeight = (0.45 * Conductor.stepCrochet * FlxMath.roundDecimal(PlayStateChangeables.scrollSpeed == 1 ? PlayState.SONG.speed : PlayStateChangeables.scrollSpeed, 2));
+							daNote.scale.y *= (stepHeight + 1) / daNote.height;
+							daNote.updateHitbox();
+							daNote.noteYOff = Math.round(-daNote.offset.y);
+
+							daNote.flipY = false;
+
 							if (!PlayStateChangeables.botPlay)
 							{
 								if ((!daNote.mustPress || daNote.wasGoodHit || daNote.prevNote.wasGoodHit || holdArray[Math.floor(Math.abs(daNote.noteData))] && !daNote.tooLate)
@@ -3015,6 +3052,16 @@ class PlayState extends MusicBeatState
 								swagRect.height -= swagRect.y;
 
 								daNote.clipRect = swagRect;
+							}
+
+							// DaveMod sustained note offsets
+							var fastNoteOffset:Int = 15;
+							var slowNoteOffset:Int = 80;
+
+							if (PlayStateChangeables.scrollSpeed > 1) {
+								daNote.y -= (PlayStateChangeables.scrollSpeed * fastNoteOffset);
+							} else if (PlayStateChangeables.scrollSpeed < 1) {
+								daNote.y += (PlayStateChangeables.scrollSpeed * slowNoteOffset);
 							}
 						}
 					}
@@ -3047,7 +3094,9 @@ class PlayState extends MusicBeatState
 							var singData:Int = Std.int(Math.abs(daNote.noteData));
 							dad.playAnim('sing' + dataSuffix[singData] + altAnim, true);
 
-							if (FlxG.save.data.cpuStrums)
+							// DaveMod - CPU Strum is always turned on for aesthetic effect.
+							// if (FlxG.save.data.cpuStrums)
+							if (2 + 2 == 4)
 							{
 								cpuStrums.forEach(function(spr:FlxSprite)
 								{
@@ -3082,7 +3131,9 @@ class PlayState extends MusicBeatState
 						var singData:Int = Std.int(Math.abs(daNote.noteData));
 							dad.playAnim('sing' + dataSuffix[singData] + altAnim, true);
 
-							if (FlxG.save.data.cpuStrums)
+							// DaveMod - CPU Strum is always turned on for aesthetic effect.
+							// if (FlxG.save.data.cpuStrums)
+							if (2 + 2 == 4)
 							{
 								cpuStrums.forEach(function(spr:FlxSprite)
 								{
@@ -4717,4 +4768,96 @@ class PlayState extends MusicBeatState
 	}
 
 	var curLight:Int = 0;
+
+	// DaveMod - This updates the scroll speed and notes for songs.
+	// A new scroll speed value is loaded from a Map based on the current beat.
+	// Notes are also faded out and back in for aesthetic effect.
+	// In addition, this function will also perform downscroll / upscroll swapping.
+	public function daveModScrollCheck():Void {
+		switch (curSong) 
+		{
+			case 'Coolkid':
+			{
+				var scrollChangeBeatMap:Map<Int, Float> = [
+					8 => 2, 
+					16 => 1, 
+					24 => 0.60,
+					32 => 2,
+					40 => 1, 
+					48 => 0.60,
+					56 => 2,
+					64 => 1, 
+					72 => 0.60,
+					80 => 2,
+					88 => 1, 
+					96 => 0.60,
+					104 => 2
+				];
+
+				for (key in scrollChangeBeatMap.keys()) {
+					if (curBeat == key - 1) {
+						daveModScrollChange(curBeat + 1, scrollChangeBeatMap[curBeat + 1]);
+						daveModScrollSwap();
+					} 
+				}
+			} 
+		}
+	}
+
+	public function daveModScrollChange(curBeat:Int, scrollVal:Float):Void {
+
+		notes.forEachAlive(function(daNote:Note)
+		{
+			daNote.fading = true;
+			FlxTween.tween(daNote, {alpha: 0}, 0.3, {ease: FlxEase.circOut});
+			FlxTween.tween(daNote, {alpha: 1}, 0.3, {ease: FlxEase.circOut, startDelay: 0.5});
+		});
+
+		new FlxTimer().start(0.4, function(tmr:FlxTimer) 
+		{
+			var newScroll:Float = PlayStateChangeables.scrollSpeed;
+
+			newScroll = scrollVal;
+
+			PlayStateChangeables.scrollSpeed = newScroll;
+		});
+
+		new FlxTimer().start(1, function(tmr:FlxTimer) 
+		{
+			notes.forEachAlive(function(daNote:Note)
+			{
+				daNote.fading = false;
+			});
+		});	
+
+		trace('scroll change');
+	}
+
+	public function daveModScrollSwap():Void {
+		// downscroll swapping
+		if (PlayStateChangeables.useDownscroll) {
+			PlayStateChangeables.useDownscroll = false;
+			strumLine.y = FlxG.height - 165;
+			// notes.forEachAlive(function(daNote:Note)
+			// {
+			// 	if (daNote.isSustainNote) {
+			// 		daNote.flipY = false;
+			// 	}
+			// });
+		} else {
+			PlayStateChangeables.useDownscroll = true;
+			strumLine.y = 50;
+			// notes.forEachAlive(function(daNote:Note)
+			// {
+			// 	if (daNote.isSustainNote) {
+			// 		daNote.flipY = true;
+			// 	}
+			// });
+		}
+
+		
+
+		trace("strumline: ", strumLine.y);
+		trace("scroll: ", PlayStateChangeables.useDownscroll);
+	}
 }

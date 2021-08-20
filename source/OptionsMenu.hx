@@ -33,7 +33,7 @@ class OptionsMenu extends MusicBeatState
 			#if desktop
 			new FPSCapOption("Change your FPS Cap."),
 			#end
-			new ScrollSpeedOption("Change your scroll speed. (1 = Chart dependent)"),
+			// new ScrollSpeedOption("Change your scroll speed. (1 = Chart dependent)"), -- DaveMod - This will always be set to 1 to avoid visual errors with custom speeds.
 			new AccuracyDOption("Change how accuracy is calculated. (Accurate = Simple, Complex = Milisecond Based)"),
 			new ResetButtonOption("Toggle pressing R to gameover."),
 			new InstantRespawn("Toggle if you instantly respawn after dying."),
@@ -49,7 +49,7 @@ class OptionsMenu extends MusicBeatState
 			new SongPositionOption("Show the song's current position as a scrolling bar."),
 			new NPSDisplayOption("Shows your current Notes Per Second on the info bar."),
 			new RainbowFPSOption("Make the FPS Counter flicker through rainbow colors."),
-			new CpuStrums("Toggle the CPU's strumline lighting up when it hits a note."),
+			// new CpuStrums("Toggle the CPU's strumline lighting up when it hits a note."), -- DaveMod - This will always be turned on for aesthetic effect.
 		]),
 		
 		new OptionCategory("Misc", [

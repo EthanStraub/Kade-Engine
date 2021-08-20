@@ -65,6 +65,9 @@ class Note extends FlxSprite
 
 	public var children:Array<Note> = [];
 
+	// DaveMod - Notes will fade in and out for aesthetic effect. This overrides any other potential changes to opacity.
+	public var fading:Bool = false;
+
 	public function new(strumTime:Float, noteData:Int, ?prevNote:Note, ?sustainNote:Bool = false, ?inCharter:Bool = false, ?isAlt:Bool = false)
 	{
 		super();
@@ -114,7 +117,7 @@ class Note extends FlxSprite
 
 		if (inCharter)
 		{
-			frames = Paths.getSparrowAtlas('NOTE_assets');
+			frames = Paths.getSparrowAtlas('DaveModNOTE_assets');
 
 			for (i in 0...4)
 			{
@@ -152,7 +155,7 @@ class Note extends FlxSprite
 					setGraphicSize(widthSize);
 					updateHitbox();
 				default:
-					frames = Paths.getSparrowAtlas('NOTE_assets');
+					frames = Paths.getSparrowAtlas('DaveModNOTE_assets');
 
 					for (i in 0...4)
 					{
