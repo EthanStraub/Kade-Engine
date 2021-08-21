@@ -150,6 +150,7 @@ class PlayState extends MusicBeatState
 	public static var strumLineNotes:FlxTypedGroup<FlxSprite> = null;
 	public static var playerStrums:FlxTypedGroup<FlxSprite> = null;
 	public static var cpuStrums:FlxTypedGroup<FlxSprite> = null;
+	public static var babyArrows:FlxTypedGroup<FlxSprite> = null; // DaveMod
 
 	private var camZooming:Bool = false;
 	private var curSong:String = "";
@@ -1031,6 +1032,7 @@ class PlayState extends MusicBeatState
 			strumLine.y = FlxG.height - 165;
 
 		strumLineNotes = new FlxTypedGroup<FlxSprite>();
+		babyArrows = new FlxTypedGroup<FlxSprite>(); // DaveMod
 		// add(strumLineNotes);
 
 		playerStrums = new FlxTypedGroup<FlxSprite>();
@@ -2105,7 +2107,6 @@ class PlayState extends MusicBeatState
 			if (!isStoryMode)
 			{
 				babyArrow.y -= 10;
-				babyArrow.y = 200; // DaveMod testing
 				//babyArrow.alpha = 0;
 				FlxTween.tween(babyArrow, {y: babyArrow.y + 10, alpha: 1}, 1, {ease: FlxEase.circOut, startDelay: 0.5 + (0.2 * i)});
 			}
@@ -2133,6 +2134,7 @@ class PlayState extends MusicBeatState
 			});
 
 			strumLineNotes.add(babyArrow);
+			babyArrows.add(babyArrow);
 		}
 	}
 
@@ -4911,8 +4913,7 @@ class PlayState extends MusicBeatState
 		{
 			notes.forEachAlive(function(daNote:Note)
 			{
-				daNote.noteFading = false; // FIXME
-				//trace('falseFade');
+				daNote.noteFading = false;
 			});
 		});	
 
@@ -4923,25 +4924,14 @@ class PlayState extends MusicBeatState
 		// downscroll swapping
 		if (PlayStateChangeables.useDownscroll) {
 			PlayStateChangeables.useDownscroll = false;
-			// strumLine.y = FlxG.height - 165;
-			// notes.forEachAlive(function(daNote:Note)
-			// {
-			// 	if (daNote.isSustainNote) {
-			// 		daNote.flipY = false;
-			// 	}
-			// });
+			for (greyArrow in babyArrows) {
+				FlxTween.tween(greyArrow, {y: 50}, 0.3, {ease: FlxEase.circOut, startDelay: 0.5});
+			}
 		} else {
 			PlayStateChangeables.useDownscroll = true;
-			// strumLine.y = 50;
-			// notes.forEachAlive(function(daNote:Note)
-			// {
-			// 	if (daNote.isSustainNote) {
-			// 		daNote.flipY = true;
-			// 	}
-			// });
+			for (greyArrow in babyArrows) {
+				FlxTween.tween(greyArrow, {y: FlxG.height - 165}, 0.3, {ease: FlxEase.circOut, startDelay: 0.5});
+			}
 		}
-
-		// trace("strumline: ", strumLine.y);
-		// trace("scroll: ", PlayStateChangeables.useDownscroll);
 	}
 }
