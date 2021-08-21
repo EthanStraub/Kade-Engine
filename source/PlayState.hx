@@ -1848,6 +1848,7 @@ class PlayState extends MusicBeatState
 			songPosBG = new FlxSprite(0, 10).loadGraphic(Paths.image('healthBar'));
 			if (PlayStateChangeables.useDownscroll)
 				songPosBG.y = FlxG.height * 0.9 + 45;
+
 			songPosBG.screenCenter(X);
 			songPosBG.scrollFactor.set();
 			add(songPosBG);
@@ -4921,7 +4922,7 @@ class PlayState extends MusicBeatState
 		// downscroll swapping
 		if (PlayStateChangeables.useDownscroll) {
 			PlayStateChangeables.useDownscroll = false;
-			strumLine.y = FlxG.height - 165;
+			// strumLine.y = FlxG.height - 165;
 			// notes.forEachAlive(function(daNote:Note)
 			// {
 			// 	if (daNote.isSustainNote) {
@@ -4930,7 +4931,7 @@ class PlayState extends MusicBeatState
 			// });
 		} else {
 			PlayStateChangeables.useDownscroll = true;
-			strumLine.y = 50;
+			// strumLine.y = 50;
 			// notes.forEachAlive(function(daNote:Note)
 			// {
 			// 	if (daNote.isSustainNote) {
@@ -4939,7 +4940,7 @@ class PlayState extends MusicBeatState
 			// });
 		}
 
-		trace("strumline: ", strumLine.y);
-		trace("scroll: ", PlayStateChangeables.useDownscroll);
+		// trace("strumline: ", strumLine.y);
+		// trace("scroll: ", PlayStateChangeables.useDownscroll);
 	}
 }

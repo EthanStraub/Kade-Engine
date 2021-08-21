@@ -276,6 +276,7 @@ class GameplayCustomizeState extends MusicBeatState
                         babyArrow.animation.addByPrefix('pressed', 'right press', 24, false);
                         babyArrow.animation.addByPrefix('confirm', 'right confirm', 24, false);
                 }
+
                 babyArrow.updateHitbox();
                 babyArrow.scrollFactor.set();
     
