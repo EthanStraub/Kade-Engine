@@ -66,7 +66,7 @@ class Note extends FlxSprite
 	public var children:Array<Note> = [];
 
 	// DaveMod - Notes will fade in and out for aesthetic effect. This overrides any other potential changes to opacity.
-	public var fading:Bool = false;
+	public var noteFading:Bool = false;
 
 	public function new(strumTime:Float, noteData:Int, ?prevNote:Note, ?sustainNote:Bool = false, ?inCharter:Bool = false, ?isAlt:Bool = false)
 	{
@@ -207,7 +207,9 @@ class Note extends FlxSprite
 		if (isSustainNote && prevNote != null)
 		{
 			noteScore * 0.2;
-			alpha = 0.6;
+			if (!noteFading) { // DaveMod
+				alpha = 0.6;
+			}
 
 			x += width / 2;
 
@@ -248,7 +250,9 @@ class Note extends FlxSprite
 		{
 			if (!sustainActive)
 			{
-				alpha = 0.3;
+				if (!noteFading) { // DaveMod
+					alpha = 0.3;
+				}
 			}
 		}
 
@@ -284,7 +288,9 @@ class Note extends FlxSprite
 		if (tooLate && !wasGoodHit)
 		{
 			if (alpha > 0.3)
-				alpha = 0.3;
+				if (!noteFading) { // DaveMod
+					alpha = 0.3;
+				}
 		}
 	}
 }

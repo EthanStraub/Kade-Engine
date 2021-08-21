@@ -1414,8 +1414,8 @@ class PlayState extends MusicBeatState
 		var red:FlxSprite = new FlxSprite(-100, -100).makeGraphic(FlxG.width * 2, FlxG.height * 2, 0xFFff1b31);
 		red.scrollFactor.set();
 
-		var senpaiEvil:FlxSprite = new FlxSprite(); // PLACEHOLDER
-		senpaiEvil.frames = Paths.getSparrowAtlas('weeb/senpaiCrazy'); // PLACEHOLDER
+		var senpaiEvil:FlxSprite = new FlxSprite(); // DaveMod -- PLACEHOLDER
+		senpaiEvil.frames = Paths.getSparrowAtlas('weeb/senpaiCrazy'); // DaveMod -- PLACEHOLDER
 
 		new FlxTimer().start(0.3, function(tmr:FlxTimer)
 		{
@@ -2770,7 +2770,7 @@ class PlayState extends MusicBeatState
 			else
 				triggeredAlready = false;
 	
-			trace(strumLine.y);
+			// trace(strumLine.y);
 
 			#if cpp
 			if (luaModchart != null)
@@ -3220,7 +3220,9 @@ class PlayState extends MusicBeatState
 					if (daNote.sustainActive)
 					{
 						if (executeModchart)
-							daNote.alpha = playerStrums.members[Math.floor(Math.abs(daNote.noteData))].alpha;
+							if (!daNote.noteFading) { // DaveMod
+								daNote.alpha = strumLineNotes.members[Math.floor(Math.abs(daNote.noteData))].alpha; 
+							}
 					}
 					daNote.modAngle = playerStrums.members[Math.floor(Math.abs(daNote.noteData))].angle;
 				}
@@ -3233,7 +3235,9 @@ class PlayState extends MusicBeatState
 					if (daNote.sustainActive)
 					{
 						if (executeModchart)
-							daNote.alpha = playerStrums.members[Math.floor(Math.abs(daNote.noteData))].alpha;
+							if (!daNote.noteFading) { // DaveMod
+								daNote.alpha = strumLineNotes.members[Math.floor(Math.abs(daNote.noteData))].alpha;
+							}
 					}
 					daNote.modAngle = strumLineNotes.members[Math.floor(Math.abs(daNote.noteData))].angle;
 				}
@@ -3284,7 +3288,9 @@ class PlayState extends MusicBeatState
 										trace("hold fell over at the start");
 										for (i in daNote.children)
 										{
-											i.alpha = 0.3;
+											if (!i.noteFading) { // DaveMod
+												i.alpha = 0.3;
+											}
 											i.sustainActive = false;
 										}
 									}
@@ -3299,7 +3305,9 @@ class PlayState extends MusicBeatState
 											trace("hold fell over at " + daNote.spotInLine);
 											for (i in daNote.parent.children)
 											{
-												i.alpha = 0.3;
+												if (!i.noteFading) { // DaveMod
+													i.alpha = 0.3;
+												}
 												i.sustainActive = false;
 											}
 											if (daNote.parent.wasGoodHit)
@@ -3333,7 +3341,9 @@ class PlayState extends MusicBeatState
 									trace("hold fell over at the start");
 									for (i in daNote.children)
 									{
-										i.alpha = 0.3;
+										if (!i.noteFading) { // DaveMod
+											i.alpha = 0.3;
+										}
 										i.sustainActive = false;
 										trace(i.alpha);
 									}
@@ -3349,7 +3359,9 @@ class PlayState extends MusicBeatState
 										trace("hold fell over at " + daNote.spotInLine);
 										for (i in daNote.parent.children)
 										{
-											i.alpha = 0.3;
+											if (!i.noteFading) { // DaveMod
+												i.alpha = 0.3;
+											}
 											i.sustainActive = false;
 											trace(i.alpha);
 										}
@@ -4874,9 +4886,14 @@ class PlayState extends MusicBeatState
 
 		notes.forEachAlive(function(daNote:Note)
 		{
-			daNote.fading = true;
+			daNote.noteFading = true;
+			//trace('trueFade');
 			FlxTween.tween(daNote, {alpha: 0}, 0.3, {ease: FlxEase.circOut});
-			FlxTween.tween(daNote, {alpha: 1}, 0.3, {ease: FlxEase.circOut, startDelay: 0.5});
+			if (daNote.isSustainNote) { // Fade sustain notes back in properly
+				FlxTween.tween(daNote, {alpha: 0.6}, 0.3, {ease: FlxEase.circOut, startDelay: 0.5});
+			} else {
+				FlxTween.tween(daNote, {alpha: 1}, 0.3, {ease: FlxEase.circOut, startDelay: 0.5});
+			}
 		});
 
 		new FlxTimer().start(0.4, function(tmr:FlxTimer) 
@@ -4888,11 +4905,12 @@ class PlayState extends MusicBeatState
 			PlayStateChangeables.scrollSpeed = newScroll;
 		});
 
-		new FlxTimer().start(1, function(tmr:FlxTimer) 
+		new FlxTimer().start(0.8, function(tmr:FlxTimer) 
 		{
 			notes.forEachAlive(function(daNote:Note)
 			{
-				daNote.fading = false;
+				daNote.noteFading = false; // FIXME
+				//trace('falseFade');
 			});
 		});	
 
