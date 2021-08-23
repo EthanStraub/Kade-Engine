@@ -1050,7 +1050,7 @@ class PlayState extends MusicBeatState
 
 		generateSong(SONG.song);
 
-		// DaveMod - These are moved down here for layering purposes with the static arrows and note tails
+		// DaveMod - These are moved down here for layering purposes with the static arrows and sustained notes
 		add(strumLineNotes);
 		generateStaticArrows(0);
 		generateStaticArrows(1);
@@ -3101,7 +3101,7 @@ class PlayState extends MusicBeatState
 							}
 
 							// DaveMod sustained note offsets
-							var fastNoteOffset:Int = 15;
+							var fastNoteOffset:Int = 10;
 							var slowNoteOffset:Int = 80;
 
 							if (PlayStateChangeables.scrollSpeed > 1) {
@@ -3224,9 +3224,7 @@ class PlayState extends MusicBeatState
 					if (daNote.sustainActive)
 					{
 						if (executeModchart)
-							if (!daNote.noteFading) { // DaveMod
-								daNote.alpha = strumLineNotes.members[Math.floor(Math.abs(daNote.noteData))].alpha; 
-							}
+							daNote.alpha = strumLineNotes.members[Math.floor(Math.abs(daNote.noteData))].alpha;
 					}
 					daNote.modAngle = playerStrums.members[Math.floor(Math.abs(daNote.noteData))].angle;
 				}
@@ -3239,9 +3237,7 @@ class PlayState extends MusicBeatState
 					if (daNote.sustainActive)
 					{
 						if (executeModchart)
-							if (!daNote.noteFading) { // DaveMod
-								daNote.alpha = strumLineNotes.members[Math.floor(Math.abs(daNote.noteData))].alpha;
-							}
+							daNote.alpha = strumLineNotes.members[Math.floor(Math.abs(daNote.noteData))].alpha;
 					}
 					daNote.modAngle = strumLineNotes.members[Math.floor(Math.abs(daNote.noteData))].angle;
 				}
@@ -4888,19 +4884,21 @@ class PlayState extends MusicBeatState
 
 	public function daveModScrollChange(curBeat:Int, scrollVal:Float):Void {
 
+		var sustainNoteTransparancy:Bool = true;
+
 		notes.forEachAlive(function(daNote:Note)
 		{
 			daNote.noteFading = true;
 			//trace('trueFade');
 			FlxTween.tween(daNote, {alpha: 0}, 0.3, {ease: FlxEase.circOut});
-			if (daNote.isSustainNote) { // Fade sustain notes back in properly
-				FlxTween.tween(daNote, {alpha: 0.6}, 0.3, {ease: FlxEase.circOut, startDelay: 0.5});
+			if (daNote.isSustainNote) { // Fade sustain notes back in separately
+				FlxTween.tween(daNote, {alpha: sustainNoteTransparancy ? 0.6 : 1}, 0.3, {ease: FlxEase.circOut, startDelay: 0.5});
 			} else {
 				FlxTween.tween(daNote, {alpha: 1}, 0.3, {ease: FlxEase.circOut, startDelay: 0.5});
 			}
 		});
 
-		new FlxTimer().start(0.4, function(tmr:FlxTimer) 
+		new FlxTimer().start(0.3, function(tmr:FlxTimer) 
 		{
 			var newScroll:Float = PlayStateChangeables.scrollSpeed;
 
@@ -4917,21 +4915,27 @@ class PlayState extends MusicBeatState
 			});
 		});	
 
-		trace('scroll change');
+		// trace('scroll change');
 	}
 
 	public function daveModScrollSwap():Void {
 		// downscroll swapping
 		if (PlayStateChangeables.useDownscroll) {
-			PlayStateChangeables.useDownscroll = false;
-			for (greyArrow in babyArrows) {
-				FlxTween.tween(greyArrow, {y: 50}, 0.3, {ease: FlxEase.circOut, startDelay: 0.5});
-			}
+			new FlxTimer().start(0.3, function(tmr:FlxTimer) 
+			{
+				PlayStateChangeables.useDownscroll = false;
+				for (greyArrow in babyArrows) {
+					FlxTween.tween(greyArrow, {y: 50}, 0.2, {ease: FlxEase.circOut});
+				}
+			});
 		} else {
-			PlayStateChangeables.useDownscroll = true;
-			for (greyArrow in babyArrows) {
-				FlxTween.tween(greyArrow, {y: FlxG.height - 165}, 0.3, {ease: FlxEase.circOut, startDelay: 0.5});
-			}
+			new FlxTimer().start(0.3, function(tmr:FlxTimer) 
+			{
+				PlayStateChangeables.useDownscroll = true;
+				for (greyArrow in babyArrows) {
+					FlxTween.tween(greyArrow, {y: FlxG.height - 165}, 0.2, {ease: FlxEase.circOut});
+				}
+			});
 		}
 	}
 }

@@ -207,9 +207,11 @@ class Note extends FlxSprite
 		if (isSustainNote && prevNote != null)
 		{
 			noteScore * 0.2;
-			if (!noteFading) { // DaveMod
-				alpha = 0.6;
-			}
+			alpha = 0.6;
+
+			// if (PlayState.SONG.song.toLowerCase() == 'coolkid' || PlayState.SONG.song.toLowerCase() == 'scratch\'d' || PlayState.SONG.song.toLowerCase() == 'godhead') {
+			// 	alpha = 1;
+			// }
 
 			x += width / 2;
 
@@ -250,9 +252,7 @@ class Note extends FlxSprite
 		{
 			if (!sustainActive)
 			{
-				if (!noteFading) { // DaveMod
-					alpha = 0.3;
-				}
+				alpha = 0.3;
 			}
 		}
 
@@ -288,9 +288,7 @@ class Note extends FlxSprite
 		if (tooLate && !wasGoodHit)
 		{
 			if (alpha > 0.3)
-				if (!noteFading) { // DaveMod
-					alpha = 0.3;
-				}
+				alpha = 0.3;
 		}
 	}
 }
