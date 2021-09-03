@@ -2904,8 +2904,14 @@ class PlayState extends MusicBeatState
 						if (daNote.isSustainNote)
 						{
 							// Remember = minus makes notes go up, plus makes them go down
-							if (daNote.animation.curAnim.name.endsWith('end') && daNote.prevNote != null)
+							if (daNote.animation.curAnim.name.endsWith("end") && daNote.prevNote != null)
+							{
 								daNote.y += daNote.prevNote.height;
+							}
+							else
+							{
+								daNote.y += daNote.height / 2;
+							}
 
 							// DaveMod - This fixes scroll speed change issues (mostly)
 							var stepHeight = (0.45 * Conductor.stepCrochet * FlxMath.roundDecimal(PlayStateChangeables.scrollSpeed == 1 ? PlayState.SONG.speed : PlayStateChangeables.scrollSpeed, 2));
