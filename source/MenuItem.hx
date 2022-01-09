@@ -20,9 +20,11 @@ class MenuItem extends FlxSpriteGroup
 
 		// In case Week 7 gets added to Kade Engine before DaveMod is finished
 		if (weekNum > latestWeek)
-			week = new FlxSprite().loadGraphic(Paths.image('storymenu/week_dave'));
+			week = new FlxSprite().loadGraphic(Paths.loadImage('storymenu/week_dave'));
 		else
-			week = new FlxSprite().loadGraphic(Paths.image('storymenu/week' + weekNum));
+			week = new FlxSprite().loadGraphic(Paths.loadImage('storymenu/week' + weekNum));
+
+		week.antialiasing = FlxG.save.data.antialiasing;
 		add(week);
 	}
 
@@ -46,7 +48,7 @@ class MenuItem extends FlxSpriteGroup
 
 		if (isFlashing)
 			flashingInt += 1;
-	
+
 		if (flashingInt % fakeFramerate >= Math.floor(fakeFramerate / 2))
 			week.color = 0xFF33ffff;
 		else if (FlxG.save.data.flashing)
