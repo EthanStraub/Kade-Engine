@@ -153,6 +153,7 @@ class FreeplayState extends MusicBeatState
 		for (i in 0...songs.length)
 		{
 			var songText:Alphabet = new Alphabet(0, (70 * i) + 30, songs[i].songName, true, false, true);
+
 			songText.isMenuItem = true;
 			songText.targetY = i;
 			grpSongs.add(songText);
@@ -229,6 +230,7 @@ class FreeplayState extends MusicBeatState
 		{
 			var data:Array<String> = list[i].split(':');
 			var songId = data[0];
+
 			var meta = new FreeplaySongMetadata(songId, Std.parseInt(data[2]), data[1]);
 
 			var diffs = [];

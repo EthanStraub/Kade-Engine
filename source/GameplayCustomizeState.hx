@@ -550,7 +550,6 @@ class GameplayCustomizeState extends MusicBeatState
 
 				default:
 					babyArrow.frames = NoteskinHelpers.generateNoteskinSprite(FlxG.save.data.noteskin);
-					// babyArrow.frames = Paths.getSparrowAtlas('DaveModNOTE_assets', 'shared');
 					for (j in 0...4)
 					{
 						babyArrow.animation.addByPrefix(dataColor[j], 'arrow' + dataSuffix[j]);

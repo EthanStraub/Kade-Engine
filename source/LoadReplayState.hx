@@ -55,6 +55,8 @@ class LoadReplayState extends MusicBeatState
 
 		addWeek(['Senpai', 'Roses', 'Thorns'], 6, ['senpai', 'senpai', 'spirit']);
 
+		addWeek(['Coolkid', 'Scratch\'d', 'Godhead'], 7, ['dad']); // Davemod
+
 		for (i in 0...controlsStrings.length)
 		{
 			var string:String = controlsStrings[i];

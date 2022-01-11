@@ -778,17 +778,8 @@ class PlayState extends MusicBeatState
 		noteskinPixelSprite = NoteskinHelpers.generatePixelSprite(FlxG.save.data.noteskin);
 		noteskinSprite = NoteskinHelpers.generateNoteskinSprite(FlxG.save.data.noteskin);
 		noteskinPixelSpriteEnds = NoteskinHelpers.generatePixelSprite(FlxG.save.data.noteskin, true);
-
 		// generateStaticArrows(0);
 		// generateStaticArrows(1);
-
-		// Update lane underlay positions AFTER static arrows :)
-
-		laneunderlay.x = playerStrums.members[0].x - 25;
-		laneunderlayOpponent.x = cpuStrums.members[0].x - 25;
-
-		laneunderlay.screenCenter(Y);
-		laneunderlayOpponent.screenCenter(Y);
 
 		// startCountdown();
 
@@ -803,6 +794,14 @@ class PlayState extends MusicBeatState
 		add(strumLineNotes);
 		generateStaticArrows(0);
 		generateStaticArrows(1);
+
+		// Update lane underlay positions AFTER static arrows :)
+
+		laneunderlay.x = playerStrums.members[0].x - 25;
+		laneunderlayOpponent.x = cpuStrums.members[0].x - 25;
+
+		laneunderlay.screenCenter(Y);
+		laneunderlayOpponent.screenCenter(Y);
 
 		#if FEATURE_LUAMODCHART
 		if (executeModchart)
@@ -1843,7 +1842,6 @@ class PlayState extends MusicBeatState
 					}
 
 				default:
-					// babyArrow.frames = Paths.getSparrowAtlas('DaveModNOTE_assets');
 					babyArrow.frames = noteskinSprite;
 					Debug.logTrace(babyArrow.frames);
 					for (j in 0...4)
@@ -4736,7 +4734,7 @@ class PlayState extends MusicBeatState
 	{
 		switch (curSong)
 		{
-			case 'Coolkid':
+			case 'coolkid':
 				{
 					var scrollChangeBeatMap:Map<Int, Float> = [
 						8 => 2, 16 => 1, 24 => 0.60, 32 => 2, 40 => 1, 48 => 0.60, 56 => 2, 64 => 1, 72 => 0.60, 80 => 2, 88 => 1, 96 => 0.60, 104 => 2
@@ -4750,7 +4748,7 @@ class PlayState extends MusicBeatState
 						}
 					}
 				}
-			case 'Scratch\'d':
+			case 'scratch\'d':
 				{
 					var scrollChangeBeatMap:Map<Int, Float> = [
 						8 => 2, 16 => 1, 24 => 0.60, 32 => 2, 40 => 1, 48 => 0.60, 56 => 2, 64 => 1, 72 => 0.60, 80 => 2, 88 => 1, 96 => 0.60, 104 => 2

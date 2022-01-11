@@ -126,7 +126,6 @@ class Note extends FlxSprite
 
 		if (inCharter)
 		{
-			// frames = Paths.getSparrowAtlas('DaveModNOTE_assets');
 			frames = PlayState.noteskinSprite;
 
 			for (i in 0...4)
@@ -172,7 +171,6 @@ class Note extends FlxSprite
 					setGraphicSize(Std.int(width * CoolUtil.daPixelZoom));
 					updateHitbox();
 				default:
-					// frames = Paths.getSparrowAtlas('DaveModNOTE_assets');
 					frames = PlayState.noteskinSprite;
 
 					for (i in 0...4)

@@ -66,7 +66,7 @@ static function weekData():Array<Dynamic>
 
     ['Senpai', 'Roses', 'Thorns'],
 
-    ['Ugh', 'Guns', 'Stress']
+    ['Ugh', 'Guns', 'Stress'],
 
   ];
 }

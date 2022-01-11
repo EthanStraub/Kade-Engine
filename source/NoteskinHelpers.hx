@@ -36,7 +36,7 @@ class NoteskinHelpers
 			noteskinArray.push(i.replace(".png", ""));
 		}
 		#else
-		noteskinArray = ["Arrows", "Circles"];
+		noteskinArray = ["Davemod", "Arrows", "Circles"];
 		#end
 
 		return noteskinArray;
@@ -76,6 +76,7 @@ class NoteskinHelpers
 		// TODO: Make this use OpenFlAssets.
 
 		Debug.logTrace("bruh momento");
+		Debug.logTrace(id);
 
 		var path = FileSystem.absolutePath("assets/shared/images/noteskins") + "/" + getNoteskinByID(id) + "-pixel" + (ends ? "-ends" : "");
 		if (!FileSystem.exists(path + ".png"))
