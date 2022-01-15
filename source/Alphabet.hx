@@ -156,6 +156,29 @@ class Alphabet extends FlxSpriteGroup
 
 				lastSprite = letter;
 			}
+			else if (character == "'") // Davemod -- Why in blue blazes is it so hard to add an apostrophe to the freeplay menu list? Anyways...
+			{
+				if (lastSprite != null)
+				{
+					xPos = lastSprite.x - pastX + lastSprite.width;
+				}
+				if (lastWasSpace)
+				{
+					xPos += 40 * xScale;
+					lastWasSpace = false;
+				}
+				var symbol:AlphaCharacter = new AlphaCharacter(xPos, 0);
+				symbol.scale.set(xScale, yScale);
+				symbol.updateHitbox();
+
+				listOAlphabets.add(symbol);
+
+				symbol.createSymbol(character);
+
+				add(symbol);
+
+				lastSprite = symbol;
+			}
 
 			// loopNum += 1;
 		}
