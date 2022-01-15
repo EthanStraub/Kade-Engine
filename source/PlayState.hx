@@ -770,7 +770,7 @@ class PlayState extends MusicBeatState
 
 		strumLineNotes = new FlxTypedGroup<StaticArrow>();
 		babyArrows = new FlxTypedGroup<StaticArrow>(); // DaveMod
-		// add(strumLineNotes);
+		// add(strumLineNotes); DaveMod
 
 		playerStrums = new FlxTypedGroup<StaticArrow>();
 		cpuStrums = new FlxTypedGroup<StaticArrow>();
@@ -778,8 +778,8 @@ class PlayState extends MusicBeatState
 		noteskinPixelSprite = NoteskinHelpers.generatePixelSprite(FlxG.save.data.noteskin);
 		noteskinSprite = NoteskinHelpers.generateNoteskinSprite(FlxG.save.data.noteskin);
 		noteskinPixelSpriteEnds = NoteskinHelpers.generatePixelSprite(FlxG.save.data.noteskin, true);
-		// generateStaticArrows(0);
-		// generateStaticArrows(1);
+		// generateStaticArrows(0); DaveMod
+		// generateStaticArrows(1); DaveMod
 
 		// startCountdown();
 
@@ -2946,7 +2946,9 @@ class PlayState extends MusicBeatState
 		if (generatedMusic)
 		{
 			var holdArray:Array<Bool> = [controls.LEFT, controls.DOWN, controls.UP, controls.RIGHT];
-			var stepHeight = (0.45 * Conductor.stepCrochet * FlxMath.roundDecimal(PlayState.SONG.speed, 2));
+			// var stepHeight = (0.45 * Conductor.stepCrochet * FlxMath.roundDecimal(PlayState.SONG.speed, 2));
+			var stepHeight = (0.45 * Conductor.stepCrochet * FlxMath.roundDecimal(PlayStateChangeables.scrollSpeed == 1 ? PlayState.SONG.speed : PlayStateChangeables.scrollSpeed,
+				2)); // Davemod
 
 			notes.forEachAlive(function(daNote:Note)
 			{
@@ -2971,11 +2973,8 @@ class PlayState extends MusicBeatState
 								- daNote.noteYOff;
 						if (daNote.isSustainNote)
 						{
-							daNote.y -= daNote.height - stepHeight;
-
-							// DaveMod - This fixes scroll speed change issues (mostly)
-							var stepHeight = (0.45 * Conductor.stepCrochet * FlxMath.roundDecimal(PlayStateChangeables.scrollSpeed == 1 ? PlayState.SONG.speed : PlayStateChangeables.scrollSpeed,
-								2));
+							// DaveMod - This fixes downscroll speed change issues (mostly)
+							daNote.y += daNote.height / 2;
 							daNote.scale.y *= (stepHeight + 1) / daNote.height;
 							daNote.updateHitbox();
 							daNote.noteYOff = Math.round(-daNote.offset.y);
@@ -3000,14 +2999,16 @@ class PlayState extends MusicBeatState
 							}
 						}
 
-						if (daNote.isParent)
-						{
-							for (i in 0...daNote.children.length)
-							{
-								var slide = daNote.children[i];
-								slide.y = daNote.y - slide.height;
-							}
-						}
+						// Davemod -- This section of code breaks my mod for some reason, so I am disabling it.
+
+						// if (daNote.isParent)
+						// {
+						// 	for (i in 0...daNote.children.length)
+						// 	{
+						// 		var slide = daNote.children[i];
+						// 		slide.y = daNote.y - slide.height;
+						// 	}
+						// }
 					}
 					else
 					{
@@ -3025,9 +3026,7 @@ class PlayState extends MusicBeatState
 						{
 							daNote.y -= daNote.height / 2;
 
-							// DaveMod - This fixes scroll speed change issues (mostly)
-							var stepHeight = (0.45 * Conductor.stepCrochet * FlxMath.roundDecimal(PlayStateChangeables.scrollSpeed == 1 ? PlayState.SONG.speed : PlayStateChangeables.scrollSpeed,
-								2));
+							// DaveMod - This fixes upscroll speed change issues (mostly)
 							daNote.scale.y *= (stepHeight + 1) / daNote.height;
 							daNote.updateHitbox();
 							daNote.noteYOff = Math.round(-daNote.offset.y);
@@ -3048,19 +3047,6 @@ class PlayState extends MusicBeatState
 								swagRect.height -= swagRect.y;
 
 								daNote.clipRect = swagRect;
-							}
-
-							// DaveMod sustained note offsets
-							var fastNoteOffset:Int = 10;
-							var slowNoteOffset:Int = 80;
-
-							if (PlayStateChangeables.scrollSpeed > 1)
-							{
-								daNote.y -= (PlayStateChangeables.scrollSpeed * fastNoteOffset);
-							}
-							else if (PlayStateChangeables.scrollSpeed < 1)
-							{
-								daNote.y += (PlayStateChangeables.scrollSpeed * slowNoteOffset);
 							}
 						}
 					}

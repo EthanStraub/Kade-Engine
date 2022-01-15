@@ -144,13 +144,6 @@ class DiffOverview extends FlxSubState
 
 			babyArrow.x += Note.swagWidth * i;
 
-			// DaveMod -- double up
-			// babyArrow.frames = NoteskinHelpers.generateNoteskinSprite(FlxG.save.data.noteskin);
-			// babyArrow.animation.addByPrefix('green', 'arrowUP');
-			// babyArrow.animation.addByPrefix('blue', 'arrowDOWN');
-			// babyArrow.animation.addByPrefix('purple', 'arrowLEFT');
-			// babyArrow.animation.addByPrefix('red', 'arrowRIGHT');
-
 			babyArrow.antialiasing = FlxG.save.data.antialiasing;
 			babyArrow.setGraphicSize(Std.int(babyArrow.width * 0.7));
 
